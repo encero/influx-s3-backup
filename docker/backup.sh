@@ -24,7 +24,11 @@ influx backup \
 
 echo "Backup done, total backed up size $(du -sh $BACKUP_DIR | cut -f0 )"
 echo "Starting S3 upload to ${BUCKET_NAME} with storage class ${S3_STORAGE_CLASS}"
-aws s3 cp --recursive "${BACKUP_DIR}" "s3://${BUCKET_NAME}/${BACKUP_TIME}"
+aws s3 cp \
+  --recursive \
+  --storage-class "${S3_STORAGE_CLASS}" \
+  "${BACKUP_DIR}"  "s3://${BUCKET_NAME}/${BACKUP_TIME}"
+
 echo "Finished..."
 
 
