@@ -1,0 +1,38 @@
+image:
+  repository: ghcr.io/encero/influx-s3-backup
+  pullPolicy: IfNotPresent
+  tag: ""
+
+schedule: "0 1 * * *"
+
+dbHost: ""
+bucketName: ""
+
+tokenSecretKey: "admin-token"
+tokenSecretName: "influxdb-influxdb2-auth"
+
+awsAccessKeySecretKey: access-key
+awsSecretAccessKeySecretKey: access-secret-key
+awsCredentialsSecretName: aws-credentials
+
+podAnnotations: {}
+
+podSecurityContext: {}
+  # fsGroup: 2000
+
+securityContext:
+  capabilities:
+    drop:
+    - ALL
+  readOnlyRootFilesystem: false
+  runAsNonRoot: true
+  runAsUser: 1000
+
+resources: {}
+  # limits:
+  #   cpu: 100m
+  #   memory: 128Mi
+  # requests:
+  #   cpu: 100m
+  #   memory: 128Mi
+
