@@ -10,6 +10,7 @@ BACKUP_DIR="/tmp/backup"
 : ${BUCKET_NAME:?"BUCKET_NAME env variable is required"}
 : ${AWS_SECRET_ACCESS_KEY:?"AWS_SECRET_ACCESS_KEY env variable is required"}
 : ${AWS_ACCESS_KEY_ID:?"AWS_ACCESS_KEY_ID env variable is required"}
+: ${S3_STORAGE_CLASS:?"S3_STORAGE_CLASS env variable is required"}
 
 BACKUP_TIME=$(date -u +"%Y-%m-%dT%H:%M:%S")
 
@@ -22,7 +23,7 @@ influx backup \
     "${BACKUP_DIR}"
 
 echo "Backup done, total backed up size $(du -sh $BACKUP_DIR | cut -f0 )"
-echo "Starting S3 upload to ${BUCKET_NAME}"
+echo "Starting S3 upload to ${BUCKET_NAME} with storage class ${S3_STORAGE_CLASS}"
 aws s3 cp --recursive "${BACKUP_DIR}" "s3://${BUCKET_NAME}/${BACKUP_TIME}"
 echo "Finished..."
 
