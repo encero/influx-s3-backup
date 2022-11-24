@@ -3,5 +3,5 @@ name: influx-s3-backup
 description: "Influx backup cronjob"
 
 type: application
-version: 0.1.0
-appVersion: "v0.1.1"
+version: 0.1.1
+appVersion: "v0.1.2"

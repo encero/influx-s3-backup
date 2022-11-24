@@ -15,6 +15,8 @@ awsAccessKeySecretKey: access-key
 awsSecretAccessKeySecretKey: access-secret-key
 awsCredentialsSecretName: aws-credentials
 
+s3storageClass: "STANDARD_IA"
+
 podAnnotations: {}
 
 podSecurityContext: {}
