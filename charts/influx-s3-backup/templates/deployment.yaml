@@ -1,0 +1,55 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: {{ include "influx-s3-backup.fullname" . }}
+  labels:
+    {{- include "influx-s3-backup.labels" . | nindent 4 }}
+spec:
+  schedule: {{ .Values.schedule | quote }}
+  jobTemplate:
+    spec:
+      template:
+        metadata:
+          {{- with .Values.podAnnotations }}
+          annotations:
+            {{- toYaml . | nindent 8 }}
+          {{- end }}
+          labels:
+            {{- include "influx-s3-backup.selectorLabels" . | nindent 12 }}
+        spec:
+          restartPolicy: Never
+          automountServiceAccountToken: false
+          securityContext:
+            {{- toYaml .Values.podSecurityContext | nindent 12 }}
+          containers:
+            - name: {{ .Chart.Name }}
+              securityContext:
+                {{- toYaml .Values.securityContext | nindent 16 }}
+              image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+              imagePullPolicy: {{ .Values.image.pullPolicy }}
+              resources:
+                {{- toYaml .Values.resources | nindent 16 }}
+              env:
+                - name: INFLUXDB_TOKEN
+                  valueFrom:
+                    secretKeyRef:
+                      key: {{ .Values.tokenSecretKey }}
+                      name: {{ .Values.tokenSecretName }}
+                      optional: false
+                - name: INFLUXDB_HOST
+                  value: {{ .Values.dbHost }}
+                - name: BUCKET_NAME
+                  value: {{ .Values.bucketName }}
+                - name: AWS_ACCESS_KEY_ID
+                  valueFrom:
+                    secretKeyRef:
+                      key: {{ .Values.awsAccessKeySecretKey }}
+                      name: {{ .Values.awsCredentialsSecretName }}
+                      optional: false
+                - name: AWS_SECRET_ACCESS_KEY
+                  valueFrom:
+                    secretKeyRef:
+                      key: {{ .Values.awsSecretAccessKeySecretKey }}
+                      name: {{ .Values.awsCredentialsSecretName }}
+                      optional: false
+
