@@ -1,0 +1,14 @@
+apiVersion: v1
+entries:
+  influx-s3-backup:
+  - apiVersion: v2
+    appVersion: v0.1.1
+    created: "2022-11-24T10:12:18.096724944Z"
+    description: Influx backup cronjob
+    digest: 71e8a57cd6d527010c0b5e197dc50584f2a75f2513a6c3708498183305f07243
+    name: influx-s3-backup
+    type: application
+    urls:
+    - https://github.com/encero/influx-s3-backup/releases/download/influx-s3-backup-0.1.0/influx-s3-backup-0.1.0.tgz
+    version: 0.1.0
+generated: "2022-11-24T10:12:18.096730346Z"
