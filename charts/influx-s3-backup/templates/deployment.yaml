@@ -30,6 +30,8 @@ spec:
               resources:
                 {{- toYaml .Values.resources | nindent 16 }}
               env:
+                - name: S3_STORAGE_CLASS
+                  value: {{ .Values.s3storageClass }}
                 - name: INFLUXDB_TOKEN
                   valueFrom:
                     secretKeyRef:
