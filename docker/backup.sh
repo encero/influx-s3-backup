@@ -2,7 +2,7 @@
 
 set -euo pipefail
 
-BACKUP_DIR="/var/backup"
+BACKUP_DIR="/tmp/backup"
 
 : ${INFLUXDB_HOST:?"INFLUXDB_HOST env variable is required"}
 : ${INFLUXDB_TOKEN:?"INFLUXDB_TOKEN env variable is required"}
@@ -21,7 +21,7 @@ influx backup \
     --token "${INFLUXDB_TOKEN}" \
     "${BACKUP_DIR}"
 
-echo "Backup done, total backed up size $(du -sh /var/backup | cut -f0 )"
+echo "Backup done, total backed up size $(du -sh $BACKUP_DIR | cut -f0 )"
 echo "Starting S3 upload to ${BUCKET_NAME}"
 aws s3 cp --recursive "${BACKUP_DIR}" "s3://${BUCKET_NAME}/${BACKUP_TIME}"
 echo "Finished..."
